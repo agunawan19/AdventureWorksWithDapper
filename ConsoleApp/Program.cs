@@ -11,6 +11,10 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
+            string machineName = Environment.MachineName;
+            Console.WriteLine(machineName);
+            Console.WriteLine(new string('-', machineName.Length));
+
             DataAccess dataAccess = new DataAccess();
             var customers = dataAccess.GetCustomers();
             var count = 0;

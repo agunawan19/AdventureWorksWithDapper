@@ -11,18 +11,41 @@ namespace ConsoleApp
 {
     public class DataAccess
     {
-        private IDbConnection GetConnection(string name = "DefaultConnection")
+        protected string _connectionName = string.Empty;
+
+        public DataAccess()
+        {
+            if (Environment.MachineName.ToUpper().Contains("PAVILION"))
+            {
+                _connectionName = ConnectionString.PavilionConnection;
+            }
+            else if (Environment.MachineName.ToUpper().Contains("RD1014"))
+            {
+                _connectionName = ConnectionString.OtherConnection;
+            }
+            else
+            {
+                _connectionName = ConnectionString.DefaultConnection;
+            }
+        }
+
+        public DataAccess(string name)
+        {
+            _connectionName = name;
+        }
+
+        private IDbConnection GetConnection()
         {
             return new System.Data.SqlClient.SqlConnection(
-                Helper.GetDatabaseConnection(name));
+                Helper.GetDatabaseConnection(_connectionName));
         }
 
         public List<Customer> GetCustomers()
         {
             using (IDbConnection connection = GetConnection())
             {
-                string query = 
-                    "SELECT TOP 20 CustomerId, Title, FirstName, MiddleName, LastName " + 
+                string query =
+                    "SELECT TOP 20 CustomerId, Title, FirstName, MiddleName, LastName " +
                     "FROM SalesLT.Customer";
 
                 return connection.Query<Customer>(query).ToList();

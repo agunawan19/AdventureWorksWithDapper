@@ -9,9 +9,7 @@ namespace ConsoleApp
 {
     public static class Helper
     {
-        public static string GetDatabaseConnection(string name)
-        {
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
-        }
+        public static string GetDatabaseConnection(string name) =>
+            ConfigurationManager.ConnectionStrings[name].ConnectionString;
     }
 }
